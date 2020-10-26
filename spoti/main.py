@@ -8,14 +8,10 @@ import os
 CLI_ID = '44de3ff0881d48c8bf95d687e5c54980'
 CLI_SEC = 'cb44c266456f483bb9efa4b092de9192'
 SCOPE = 'user-library-read user-read-currently-playing user-read-playback-state'
-
+REDIRECT_URI = 'https://spot-info.herokuapp.com/api_callback '
 
 @app.route('/')
 def home():
-    global REDIRECT_URI
-    temp = url_for('site', _external=True)
-    temp = temp.split("index")
-    REDIRECT_URI = temp[0] + 'api_callback'
     return redirect('verify')
 
 
