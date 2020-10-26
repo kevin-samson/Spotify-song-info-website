@@ -14,7 +14,7 @@ SCOPE = 'user-library-read user-read-currently-playing user-read-playback-state'
 def home():
     global REDIRECT_URI
     temp = url_for('site', _external=True)
-    temp = temp.split("site")
+    temp = temp.split("index")
     REDIRECT_URI = temp[0] + 'api_callback'
     return redirect('verify')
 
