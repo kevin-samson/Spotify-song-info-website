@@ -1,4 +1,4 @@
 from spoti import app
 
 if '__main__' == __name__:
-    app.run()
+    app.run(debug=True)

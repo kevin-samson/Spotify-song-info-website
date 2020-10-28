@@ -2,33 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>render</title>
+    <title>Song Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel = "icon" href ='{{ img }}'
+          type = "image/x-icon">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}">
 </head>
 <body>
 <br>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row align-items-center">
         <div class="col-md-12"><br></div>
         <div class="col-md-12">
+            <img src='{{ img }}' class="img-fluid rounded mx-auto d-block" alt="Responsive image">
             <br>
             <h3 class="text-center">
-                Here is your URL !
+               {{ name }}
             </h3>
+            <h5 class="text-center">
+                <small>by {{ artist }}</small>
+            </h5>
+            <br>
         </div>
     </div>
 </div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12"><br></div>
-        <div class="col-md-12">
-            <br>
-            <h3 class="text-center">
-                {{ site }}
-            </h3>
-        </div>
-    </div>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Data</th>
+          <th scope="col">Value</th>
+        </tr>
+        </thead>
+        {% for i,(key,value) in info %}
+            {% if i%2 == 0 %}
+                <tbody>
+                <tr class="table-primary">
+                  <th scope="row">{{ key }}</th>
+                  <td>{{ value }}</td>
+                </tr>
+                </tbody>
+            {% else %}
+               <tbody>
+                <tr class="table-secondary">
+                  <th scope="row">{{ key }}</th>
+                  <td>{{ value }}</td>
+                </tr>
+                </tbody>
+            {% endif %}
+        {% endfor %}
+    </table>
 </div>
 </body>
 </html>

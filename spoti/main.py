@@ -1,6 +1,7 @@
 from spoti import app
-from flask import redirect, session, request, render_template, url_for
+from flask import redirect, session, request, render_template, url_for, flash
 import spotipy
+import spotipy.exceptions
 from spoti.forms import MainForm
 import time
 import os
@@ -10,9 +11,10 @@ CLI_SEC = 'cb44c266456f483bb9efa4b092de9192'
 SCOPE = 'user-library-read user-read-currently-playing user-read-playback-state'
 REDIRECT_URI = 'https://spot-info.herokuapp.com/api_callback'
 
+
 @app.route('/')
 def home():
-    return redirect('verify')
+    return render_template('welcome.html')
 
 
 @app.route("/verify")
@@ -51,7 +53,7 @@ def get_token(session):
     is_token_expired = session.get('token_info').get('expires_at') - now < 60
 
     # Refreshing token if it has expired
-    if (is_token_expired):
+    if is_token_expired:
         sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id=CLI_ID, client_secret=CLI_SEC, redirect_uri=REDIRECT_URI,
                                                scope=SCOPE)
         token_info = sp_oauth.refresh_access_token(session.get('token_info').get('refresh_token'))
@@ -65,9 +67,8 @@ def index():
     form = MainForm()
     if form.validate_on_submit():
         url = form.website.data
-        print(url)
         if 'https' in url:
-            return redirect(url_for('go', url=os.path.basename(url)))
+            return redirect(url_for('go', url=os.path.basename(url).split("?")[0]))
         if form.submit2.data:
             return redirect(url_for('go', url='cur'))
         return redirect(url_for('go', url=url))
@@ -84,10 +85,24 @@ def go(url):
     if url == 'cur':
         if sp.current_user_playing_track():
             track_data = sp.current_user_playing_track()['item']
-            response = sp.audio_analysis(track_data['uri'])
+            response = sp.audio_features([track_data['uri']])
+            print(response)
         else:
             response = 'no track playing'
+            track_data = None
     else:
-        response = sp.audio_analysis(url)
-    print(sp.current_user())
-    return response
+        try:
+            track_data = sp.track(url)
+        except spotipy.exceptions.SpotifyException:
+            flash('Enter valid data', 'danger')
+            return redirect(url_for('index'))
+        response = sp.audio_features([url])
+        print(type(response[0]))
+    if track_data:
+        name = track_data['name']
+        artist = ''.join([i['name'] + " " for i in track_data['album']['artists']])
+        img = track_data['album']['images'][1]['url']
+        return render_template('site.html', img=img, artist=artist, name=name, info=enumerate(response[0].items()))
+    else:
+        flash("No song playing")
+        return redirect(url_for('index'))
