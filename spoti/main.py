@@ -6,11 +6,11 @@ from spoti.forms import MainForm
 import time
 import os
 
-CLI_ID = '44de3ff0881d48c8bf95d687e5c54980'
-CLI_SEC = 'cb44c266456f483bb9efa4b092de9192'
+CLI_ID = 'YOUR ID ' #change this
+CLI_SEC = 'YOUR PASS' # and this
 SCOPE = 'user-library-read user-read-currently-playing user-read-playback-state'
-REDIRECT_URI = 'https://spot-info.herokuapp.com/api_callback'
-
+REDIRECT_URI = 'https://spot-info.herokuapp.com/api_callback' # change this to 
+ 
 
 @app.route('/')
 def home():
