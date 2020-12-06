@@ -1,6 +1,6 @@
 # Spotify song info website
 
-Gets song info using spotify url or by finding the `Now playing Song` of the user
+Gets song info using spotify url or by finding the `Now playing Song` of the user. Made using python
 
 ## Testing out the site
 The site can be found [here](https://spot-info.herokuapp.com). Hosted by [Heroku](https://www.heroku.com) for free
