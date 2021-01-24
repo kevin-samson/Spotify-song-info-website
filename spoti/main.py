@@ -1,13 +1,15 @@
-from spoti import app
-from flask import redirect, session, request, render_template, url_for, flash
+import os
+import time
+
 import spotipy
 import spotipy.exceptions
-from spoti.forms import MainForm
-import time
-import os
+from flask import redirect, session, request, render_template, url_for, flash
 
-CLI_ID = 'YOUR ID ' #change this
-CLI_SEC = 'YOUR PASS' # and this
+from spoti import app
+from spoti.forms import MainForm
+
+CLI_ID = os.environ['CLI_ID'] #change this
+CLI_SEC = os.environ['CLI_SEC'] # and this
 SCOPE = 'user-library-read user-read-currently-playing user-read-playback-state'
 REDIRECT_URI = 'https://spot-info.herokuapp.com/api_callback' # change this to 
  
